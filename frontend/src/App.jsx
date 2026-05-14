@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -7,6 +7,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 function App() {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const [backendStatus, setBackendStatus] = useState("Checking...")
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -24,12 +25,40 @@ function App() {
     .addTo(map.current);
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:3000/api/health")
+      .then((res) => res.json())
+      .then((data) => setBackendStatus(data.message))
+      .catch((err) => {
+        console.error("Backend connection failed:", err);
+        setBackendStatus("offline")
+      });
+  }, []);
+
+
   return (
+  <>
     <div
       ref={mapContainer}
-      style={{width: "100vw", height: "100vh"}}
-    />  
-  )
+      style={{ width: "100vw", height: "100vh" }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        top: 12,
+        left: 12,
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "white",
+        padding: "8px 12px",
+        borderRadius: 4,
+        fontSize: 14,
+        zIndex: 1,
+      }}
+    >
+      Backend Status: {backendStatus}
+    </div>
+  </>
+);
 }
 
 export default App;
