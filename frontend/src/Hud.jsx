@@ -1,61 +1,9 @@
 import "./Hud.css";
-
-// Minimal inline icons (stroke = currentColor) so we don't pull in an icon dependency yet.
-const ICONS = {
-  wheel: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <circle cx="12" cy="12" r="2.6" />
-      <path d="M12 14.6V21M9.7 11 4.3 8M14.3 11l5.4-3" />
-    </>
-  ),
-  flame: (
-    <path d="M12 3c2.8 3.6 4.5 5.9 4.5 8.6a4.5 4.5 0 0 1-9 0c0-1.3.5-2.5 1.4-3.5.6.8 1.3 1.2 2 1.2C9.5 7.6 10.4 5.7 12 3Z" />
-  ),
-  camera: (
-    <>
-      <path d="M4 8h2.3l1.3-2h8.8l1.3 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
-      <circle cx="12" cy="12.8" r="3" />
-    </>
-  ),
-  pin: (
-    <>
-      <path d="M12 21s6.5-5.8 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15.2 12 21 12 21Z" />
-      <circle cx="12" cy="10.5" r="2.4" />
-    </>
-  ),
-  ruler: (
-    <>
-      <rect x="3" y="8.5" width="18" height="7" rx="1" />
-      <path d="M7 8.5v2.6M11 8.5v3.4M15 8.5v2.6M19 8.5v3.4" />
-    </>
-  ),
-  wave: <path d="M2.5 15c2 0 2.3-6 4.7-6s2.8 6 4.8 6 2.4-6 4.7-6" />,
-  mountain: <path d="M3 19 9 8l3.2 5.2L15.5 8 21 19Z" />,
-  bolt: <path d="M13 2 5.5 13H11l-1 9 8.5-12H12Z" />,
-};
-
-function Icon({ name, size = 16, className = "" }) {
-  return (
-    <svg
-      className={`hud-icon ${className}`}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      {ICONS[name]}
-    </svg>
-  );
-}
+import Icon from "./Icon.jsx";
 
 const DIFFICULTY_BARS = { easy: 2, moderate: 3, hard: 4, expert: 5 };
 const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "—");
+const shortName = (name = "") => name.split("—")[0].trim() || name;
 
 function DifficultyMeter({ difficulty }) {
   const filled = DIFFICULTY_BARS[String(difficulty).toLowerCase()] ?? 3;
@@ -72,7 +20,7 @@ function Stat({ icon, value, label }) {
   return (
     <div className="hud-stat">
       <div className="hud-stat__val">
-        <Icon name={icon} size={14} className="hud-muted" />
+        <Icon name={icon} size={16} className="hud-muted" />
         {value ?? "—"}
       </div>
       <div className="hud-stat__label">{label}</div>
@@ -80,8 +28,8 @@ function Stat({ icon, value, label }) {
   );
 }
 
-// Static for now — becomes live once we read speed from the Geolocation API.
-function Speedometer({ speed = 58, max = 120 }) {
+// Live speedometer — driven by the device Geolocation API; reads 0 with no GPS fix.
+function Speedometer({ speed = 0, hasGps = false, max = 120 }) {
   const polar = (deg) => {
     const a = (deg * Math.PI) / 180;
     return [70 + 56 * Math.cos(a), 70 + 56 * Math.sin(a)];
@@ -107,17 +55,31 @@ function Speedometer({ speed = 58, max = 120 }) {
         </text>
       </svg>
       <div className="hud-speed__gear">
-        <span>D4</span> · 4,200 rpm
+        <span className={`hud-gps${hasGps ? " is-on" : ""}`}>
+          {hasGps ? "● GPS live" : "○ awaiting GPS"}
+        </span>
       </div>
     </div>
   );
 }
 
-export default function Hud({ route, backendStatus }) {
+export default function Hud({
+  route,
+  routes = [],
+  selectedId,
+  onSelectRoute,
+  backendStatus,
+  speed = 0,
+  hasGps = false,
+  score = 0,
+  scoreDelta = 0,
+  discovered = 0,
+}) {
   const online = backendStatus && backendStatus !== "offline" && backendStatus !== "Checking...";
   const name = route?.name ?? "Finding scenic routes…";
   const vibe = route?.vibe ?? "—";
   const difficulty = route?.difficulty ?? "moderate";
+  const total = routes.length || 1;
 
   return (
     <div className="hud">
@@ -125,7 +87,7 @@ export default function Hud({ route, backendStatus }) {
 
       <div className="hud-wordmark">
         <div className="hud-wordmark__badge">
-          <Icon name="wheel" size={18} />
+          <Icon name="wheel" size={22} />
         </div>
         <div>
           <div className="hud-wordmark__title">
@@ -140,29 +102,49 @@ export default function Hud({ route, backendStatus }) {
       </div>
 
       <div className="hud-panel hud-score">
-        <Icon name="flame" size={18} />
+        <Icon name="trophy" size={22} />
         <div>
           <div className="hud-label">Discovery score</div>
           <div className="hud-score__val">
-            1,250 <span>+250</span>
+            {score.toLocaleString()}
+            {scoreDelta > 0 && <span>+{scoreDelta}</span>}
           </div>
         </div>
       </div>
 
       <div className="hud-panel hud-overlook">
         <div className="hud-overlook__head">
-          <Icon name="camera" size={17} className="hud-accent" />
+          <Icon name="camera" size={20} className="hud-accent" />
           <span className="hud-overlook__title">Scenic overlook</span>
           <span className="hud-ping" />
         </div>
-        <div className="hud-overlook__sub">1.2 mi ahead · photo op · +250 pts</div>
+        <div className="hud-overlook__sub">
+          {route
+            ? `${route.curves} curves · ${route.elevationFt} ft climb ahead`
+            : "1.2 mi ahead · photo op · +250 pts"}
+        </div>
       </div>
 
       <div className="hud-panel hud-route">
         <div className="hud-route__eyebrow">
-          <Icon name="pin" size={14} className="hud-muted" /> Current route
+          <Icon name="pin" size={16} className="hud-muted" /> Current route
         </div>
         <div className="hud-route__name">{name}</div>
+
+        {routes.length > 0 && (
+          <div className="hud-route__switch">
+            {routes.map((f) => (
+              <button
+                key={f.properties.id}
+                className={`hud-routebtn${f.properties.id === selectedId ? " is-on" : ""}`}
+                onClick={() => onSelectRoute?.(f.properties.id)}
+              >
+                {shortName(f.properties.name)}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div>
           <span className="hud-chip">{vibe}</span>
         </div>
@@ -180,21 +162,23 @@ export default function Hud({ route, backendStatus }) {
         </div>
       </div>
 
-      <Speedometer speed={58} />
+      <Speedometer speed={speed} hasGps={hasGps} />
 
       <div className="hud-panel hud-skill">
         <div className="hud-skill__head">
           <span>
-            <Icon name="bolt" size={16} className="hud-accent" /> Skill chain
+            <Icon name="route" size={18} className="hud-accent" /> Discovery progress
           </span>
-          <span className="hud-skill__mult">×2.4</span>
+          <span className="hud-skill__mult">
+            {discovered}/{total}
+          </span>
         </div>
         <div className="hud-skill__bar">
-          <div style={{ width: "72%" }} />
+          <div style={{ width: `${Math.round((discovered / total) * 100)}%` }} />
         </div>
         <div className="hud-skill__foot">
-          <span>Clean driving</span>
-          <span>+180 style</span>
+          <span>Routes uncovered</span>
+          <span>+{score.toLocaleString()} pts</span>
         </div>
       </div>
     </div>

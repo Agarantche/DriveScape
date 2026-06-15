@@ -65,9 +65,9 @@
   animation: hud-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .hud-wordmark__badge {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -276,9 +276,12 @@
   font-size: 11px;
   color: rgba(246, 248, 251, 0.55);
 }
-.hud-speed__gear span {
-  color: #ff9d72;
+.hud-gps {
   font-weight: 600;
+  color: rgba(246, 248, 251, 0.5);
+}
+.hud-gps.is-on {
+  color: #34e08a;
 }
 
 /* Skill chain */
@@ -381,4 +384,32 @@
   .hud-ping {
     animation: none;
   }
+}
+
+/* Route switcher (inside the current-route card) */
+.hud-route__switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.hud-routebtn {
+  font: 600 11px system-ui, "Segoe UI", sans-serif;
+  color: rgba(246, 248, 251, 0.72);
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 6px 11px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.hud-routebtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.hud-routebtn.is-on {
+  color: #1a0f0a;
+  background: #ff6b35;
+  border-color: #ff6b35;
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.55);
 }
