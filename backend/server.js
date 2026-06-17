@@ -13,6 +13,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Chrome DevTools may probe this optional app-specific config URL on localhost.
+// Return an empty JSON object so it does not show as a noisy 404/CSP warning.
+app.get("/.well-known/appspecific/com.chrome.devtools.json", (req, res) => {
+  res.json({});
+});
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
@@ -38,7 +44,7 @@ app.get("/api/routes/nearby", async (req, res) => {
   try {
     const fc = await getScenicRoutesNear(lat, lng);
     if (fc.features.length > 0) return res.json(fc);
-    console.warn("No OSM routes found near", lat, lng, "— serving mock set.");
+    console.warn("No OSM routes found near", lat, lng, "- serving mock set.");
     return res.json(getNearbyRoutes(lat, lng));
   } catch (err) {
     console.error("Overpass lookup failed, serving mock set:", err.message);

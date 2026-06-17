@@ -13,6 +13,24 @@ const LANDMARKS = {
     {
       type: "Feature",
       properties: {
+        id: "humble-beginnings-georgesville",
+        name: "Humble Beginnings",
+        category: "Origin Story",
+        fact: "A first DriveScape test stop on Georgesville Road. Every global discovery game needs one tiny place where the scoreboard begins.",
+        points: 25,
+        rarity: "starter",
+        vibe: "Day-one landmark",
+        region: "Ohio",
+        country: "United States",
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [-83.1277664397881, 39.91946870417404],
+      },
+    },
+    {
+      type: "Feature",
+      properties: {
         id: "burr-oak-state-park",
         name: "Burr Oak State Park",
         category: "Nature",

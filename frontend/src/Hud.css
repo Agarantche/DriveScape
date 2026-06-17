@@ -61,6 +61,7 @@
 .hud-brand,
 .hud-driving,
 .hud-route,
+.hud-landmark,
 .hud-drawer__inner {
   background: #080d16;
   border: 2px solid rgba(255, 255, 255, 0.18);
@@ -225,6 +226,7 @@
 }
 
 .hud-routebtn,
+.hud-checkin,
 .hud-action,
 .hud-drawer-toggle {
   min-width: 48px;
@@ -349,6 +351,118 @@
 
 .hud-drawer-toggle.is-open {
   border-color: rgba(255, 107, 53, 0.72);
+}
+
+.hud-landmark {
+  position: absolute;
+  right: clamp(18px, 3vw, 42px);
+  bottom: clamp(18px, 4vh, 42px);
+  width: min(390px, calc(100vw - 36px));
+  padding: 20px;
+  border-color: rgba(255, 107, 53, 0.46);
+  border-radius: 22px;
+  pointer-events: auto;
+}
+
+.hud-landmark__top,
+.hud-landmark__eyebrow,
+.hud-landmark__meta {
+  display: flex;
+  align-items: center;
+}
+
+.hud-landmark__top {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hud-landmark__eyebrow {
+  gap: 10px;
+  color: #ffb088;
+  font-size: 16px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.hud-landmark__points {
+  flex: 0 0 auto;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  color: #120904;
+  background: #ff6b35;
+  border-radius: 999px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.hud-landmark__name {
+  margin-top: 12px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.08;
+}
+
+.hud-landmark__fact {
+  margin-top: 11px;
+  color: #dbe4f0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.hud-landmark__meta {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.hud-landmark__meta span {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  color: #dbe4f0;
+  background: #172033;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.hud-checkin {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 18px;
+  color: #120904;
+  background: #ff6b35;
+  border: 2px solid #ff9a70;
+  border-radius: 16px;
+  font: 900 19px/1 system-ui, "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+.hud-checkin:not(:disabled):hover,
+.hud-checkin:not(:disabled):focus-visible {
+  background: #ff865c;
+  outline: none;
+}
+
+.hud-checkin:disabled {
+  cursor: not-allowed;
+  color: #a8b3c7;
+  background: #172033;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.hud-checkin.is-visited {
+  color: #052e1a;
+  background: #34d399;
+  border-color: #a7f3d0;
 }
 
 .hud-drawer {
@@ -501,6 +615,19 @@
 
   .hud-route {
     padding: 16px;
+  }
+
+  .hud-landmark {
+    width: min(320px, calc(100vw - 36px));
+    padding: 16px;
+  }
+
+  .hud-landmark__name {
+    font-size: 25px;
+  }
+
+  .hud-landmark__fact {
+    font-size: 16px;
   }
 }
 

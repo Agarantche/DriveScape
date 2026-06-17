@@ -120,6 +120,54 @@ function RoutePlanner({ route, routes, selectedId, onSelectRoute }) {
   );
 }
 
+function LandmarkCard({ landmark, checkInRadiusMi, onCheckIn }) {
+  if (!landmark) {
+    return (
+      <section className="hud-landmark" aria-label="Landmark discovery">
+        <div className="hud-landmark__eyebrow">
+          <Icon name="sparkle" size={22} /> Landmark discovery
+        </div>
+        <div className="hud-landmark__name">Scanning nearby places</div>
+        <div className="hud-landmark__fact">Tap a landmark pin to reveal facts and points.</div>
+      </section>
+    );
+  }
+
+  const isVisited = Boolean(landmark.isVisited);
+  const canCheckIn = Boolean(landmark.canCheckIn);
+  const buttonText = isVisited
+    ? "Visited"
+    : canCheckIn
+      ? "Check in"
+      : `Move within ${checkInRadiusMi} mi`;
+
+  return (
+    <section className="hud-landmark" aria-label="Selected landmark">
+      <div className="hud-landmark__top">
+        <div className="hud-landmark__eyebrow">
+          <Icon name="sparkle" size={22} /> {landmark.category}
+        </div>
+        <div className="hud-landmark__points">+{landmark.points} pts</div>
+      </div>
+      <div className="hud-landmark__name">{landmark.name}</div>
+      <div className="hud-landmark__fact">{landmark.fact}</div>
+      <div className="hud-landmark__meta">
+        <span>{cap(landmark.rarity)}</span>
+        <span>{landmark.distanceMi} mi away</span>
+        <span>{landmark.vibe}</span>
+      </div>
+      <button
+        className={`hud-checkin${isVisited ? " is-visited" : ""}`}
+        type="button"
+        disabled={isVisited || !canCheckIn}
+        onClick={() => onCheckIn?.(landmark.id)}
+      >
+        {buttonText}
+      </button>
+    </section>
+  );
+}
+
 function SecondaryDrawer({
   open,
   user,
@@ -131,6 +179,8 @@ function SecondaryDrawer({
   scoreDelta,
   discovered,
   total,
+  landmarkCount,
+  visitedLandmarkCount,
 }) {
   const online = backendStatus && backendStatus !== "offline" && backendStatus !== "Checking...";
 
@@ -156,6 +206,9 @@ function SecondaryDrawer({
           </div>
           <div className="hud-drawer__sub">
             {discovered}/{total} routes uncovered
+          </div>
+          <div className="hud-drawer__sub">
+            {visitedLandmarkCount}/{landmarkCount} landmarks visited
           </div>
         </div>
 
@@ -185,6 +238,11 @@ function SecondaryDrawer({
 export default function Hud({
   route,
   routes = [],
+  landmark,
+  landmarkCount = 0,
+  visitedLandmarkCount = 0,
+  checkInRadiusMi = 1.5,
+  onCheckInLandmark,
   selectedId,
   onSelectRoute,
   backendStatus,
@@ -225,6 +283,8 @@ export default function Hud({
         <RoutePlanner route={route} routes={routes} selectedId={selectedId} onSelectRoute={onSelectRoute} />
       </main>
 
+      <LandmarkCard landmark={landmark} checkInRadiusMi={checkInRadiusMi} onCheckIn={onCheckInLandmark} />
+
       <button
         className={`hud-drawer-toggle${drawerOpen ? " is-open" : ""}`}
         onClick={() => setDrawerOpen((v) => !v)}
@@ -245,6 +305,8 @@ export default function Hud({
         scoreDelta={scoreDelta}
         discovered={discovered}
         total={total}
+        landmarkCount={landmarkCount}
+        visitedLandmarkCount={visitedLandmarkCount}
       />
     </div>
   );
