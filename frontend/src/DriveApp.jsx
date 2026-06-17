@@ -10,7 +10,11 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
 const POINTS_PER_DISCOVERY = 250;
 const MS_TO_MPH = 2.2369363;
-const DEFAULT_ORIGIN = [-83.93, 35.51]; // Tail of the Dragon — a great demo if location is denied
+const DEFAULT_ORIGIN = [-83.93, 35.51]; // Tail of the Dragon - a great demo if location is denied
+const MAP_STYLES = {
+  streets: "mapbox://styles/mapbox/streets-v12",
+  satellite: "mapbox://styles/mapbox/satellite-streets-v12",
+};
 
 export default function DriveApp() {
   const { user, signOut } = useAuth();
@@ -22,6 +26,8 @@ export default function DriveApp() {
   const routesRef = useRef([]);
   const discoveredRef = useRef(new Set());
   const originResolved = useRef(false);
+  const currentOrigin = useRef(DEFAULT_ORIGIN);
+  const mapModeReady = useRef(false);
 
   const [backendStatus, setBackendStatus] = useState("Checking...");
   const [routes, setRoutes] = useState([]);
@@ -32,6 +38,7 @@ export default function DriveApp() {
   const [scoreDelta, setScoreDelta] = useState(0);
   const [discoveredCount, setDiscoveredCount] = useState(0);
   const [locating, setLocating] = useState(true);
+  const [mapMode, setMapMode] = useState("streets");
 
   // Select a route: highlight it, fly to it, and award points the first time it's seen.
   const selectRoute = useCallback((id) => {
@@ -129,7 +136,7 @@ export default function DriveApp() {
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      style: MAP_STYLES.streets,
       center: DEFAULT_ORIGIN,
       zoom: 9,
     });
@@ -140,6 +147,7 @@ export default function DriveApp() {
     const resolve = (origin) => {
       if (originResolved.current) return;
       originResolved.current = true;
+      currentOrigin.current = origin;
       loadAt(origin);
     };
 
@@ -184,6 +192,18 @@ export default function DriveApp() {
     };
   }, [loadAt]);
 
+  // Mapbox removes custom sources/layers whenever the base style changes, so reload routes afterward.
+  useEffect(() => {
+    const m = map.current;
+    if (!m) return;
+    if (!mapModeReady.current) {
+      mapModeReady.current = true;
+      return;
+    }
+    m.setStyle(MAP_STYLES[mapMode]);
+    m.once("style.load", () => loadAt(currentOrigin.current));
+  }, [mapMode, loadAt]);
+
   // Keep the highlight layer in sync with the selected route.
   useEffect(() => {
     const m = map.current;
@@ -211,23 +231,17 @@ export default function DriveApp() {
     <>
       <div ref={mapContainer} className="map-root" />
 
-      {user && (
-        <div className="account">
-          <span className="account__email">{user.email}</span>
-          <button className="account__btn" onClick={signOut}>
-            Sign out
-          </button>
-        </div>
-      )}
-
-      {locating && <div className="locating">Finding scenic roads near you…</div>}
-
       <Hud
         route={selectedRoute}
         routes={routes}
         selectedId={selectedId}
         onSelectRoute={selectRoute}
         backendStatus={backendStatus}
+        user={user}
+        onSignOut={signOut}
+        mapMode={mapMode}
+        onToggleMapMode={() => setMapMode((mode) => (mode === "streets" ? "satellite" : "streets"))}
+        locating={locating}
         speed={speed}
         hasGps={hasGps}
         score={score}

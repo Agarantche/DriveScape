@@ -1,10 +1,10 @@
 // Mock scenic-route data for the SR-78 / Wayne National Forest area (SE Ohio).
 //
-// IMPORTANT: GeoJSON coordinates are [longitude, latitude] — NOT [lat, lng].
+// IMPORTANT: GeoJSON coordinates are [longitude, latitude] - NOT [lat, lng].
 // (Mapbox, PostGIS, and the GeoJSON spec all use lng-first. Humans say "lat/lng".
 //  Mixing these up is the classic reason lines render in the wrong place / ocean.)
 //
-// These are hand-drawn near real roads — good enough to render while we have no
+// These are hand-drawn near real roads - good enough to render while we have no
 // database. Later this whole file gets replaced by a PostGIS query (see getNearbyRoutes).
 
 const SCENIC_ROUTES = {
@@ -14,7 +14,7 @@ const SCENIC_ROUTES = {
       type: "Feature",
       properties: {
         id: "sr555-triple-nickel",
-        name: "SR-555 — The Triple Nickel",
+        name: "SR-555 - The Triple Nickel",
         description:
           "Legendary motorcycle road through the ridges and hollows north of Chesterhill. Tight, relentless curves with almost no straights.",
         difficulty: "expert",
@@ -40,7 +40,7 @@ const SCENIC_ROUTES = {
       type: "Feature",
       properties: {
         id: "sr78-wayne-ridge-run",
-        name: "SR-78 — The Wayne Ridge Run",
+        name: "SR-78 - The Wayne Ridge Run",
         description:
           "The signature ridge-top run through Wayne National Forest. Sweeping curves with big tree-canopy views on both sides.",
         difficulty: "moderate",
@@ -66,7 +66,7 @@ const SCENIC_ROUTES = {
       type: "Feature",
       properties: {
         id: "sr377-hollow-hopper",
-        name: "SR-377 — Hollow Hopper",
+        name: "SR-377 - Hollow Hopper",
         description:
           "Quiet backcountry connector that dips through creek hollows and farm valleys. Low traffic, easy rhythm.",
         difficulty: "easy",
@@ -91,7 +91,7 @@ const SCENIC_ROUTES = {
       type: "Feature",
       properties: {
         id: "sr26-covered-bridge-byway",
-        name: "SR-26 — Covered Bridge Byway",
+        name: "SR-26 - Covered Bridge Byway",
         description:
           "Follows the Little Muskingum River past historic covered bridges. Gentle riverside meander, great for photo stops.",
         difficulty: "moderate",

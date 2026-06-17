@@ -1,7 +1,7 @@
 // Shared inline icon set (stroke = currentColor) used by the HUD and the landing page.
 // Hand-rolled 24x24 paths so we don't pull in an icon dependency.
 
-export const ICONS = {
+const ICONS = {
   wheel: (
     <>
       <circle cx="12" cy="12" r="9" />
@@ -67,6 +67,21 @@ export const ICONS = {
       <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
     </>
   ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  x: <path d="M6 6l12 12M18 6 6 18" />,
+  layers: (
+    <>
+      <path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z" />
+      <path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5" />
+    </>
+  ),
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </>
+  ),
+  logout: <path d="M10 17l5-5-5-5M15 12H3M21 4v16" />,
 };
 
 export default function Icon({ name, size = 16, className = "", strokeWidth = 1.8 }) {

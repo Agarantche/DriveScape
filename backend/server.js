@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { getNearbyRoutes } from "./scenicRoutes.js";
 import { getScenicRoutesNear } from "./overpassRoutes.js";
+import { getNearbyLandmarks } from "./landmarks.js";
 
 dotenv.config();
 
@@ -43,6 +44,28 @@ app.get("/api/routes/nearby", async (req, res) => {
     console.error("Overpass lookup failed, serving mock set:", err.message);
     return res.json(getNearbyRoutes(lat, lng));
   }
+});
+
+// Landmark discoveries near a coordinate, as a GeoJSON FeatureCollection.
+// Example: GET /api/landmarks/nearby?lat=39.5&lng=-81.85
+app.get("/api/landmarks/nearby", (req, res) => {
+  const lat = Number(req.query.lat);
+  const lng = Number(req.query.lng);
+  const radiusMi = req.query.radiusMi == null ? undefined : Number(req.query.radiusMi);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    return res.status(400).json({
+      error: "Query params 'lat' and 'lng' are required and must be numbers.",
+    });
+  }
+
+  if (radiusMi !== undefined && (!Number.isFinite(radiusMi) || radiusMi <= 0)) {
+    return res.status(400).json({
+      error: "Optional query param 'radiusMi' must be a positive number.",
+    });
+  }
+
+  return res.json(getNearbyLandmarks(lat, lng, radiusMi));
 });
 
 app.listen(PORT, () => {
