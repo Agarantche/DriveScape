@@ -13,20 +13,20 @@ const LANDMARKS = {
     {
       type: "Feature",
       properties: {
-        id: "humble-beginnings-georgesville",
-        name: "Humble Beginnings",
-        category: "Origin Story",
-        fact: "A first DriveScape test stop on Georgesville Road. Every global discovery game needs one tiny place where the scoreboard begins.",
+        id: "prototype-overlook-demo",
+        name: "Prototype Overlook",
+        category: "Demo Stop",
+        fact: "A starter discovery used to test DriveScape's landmark cards, points, and check-in flow before the global landmark database is connected.",
         points: 25,
         rarity: "starter",
-        vibe: "Day-one landmark",
+        vibe: "First checkpoint",
         checkInRadiusMi: 2,
-        region: "Ohio",
+        region: "Demo Region",
         country: "United States",
       },
       geometry: {
         type: "Point",
-        coordinates: [-83.1277664397881, 39.91946870417404],
+        coordinates: [-83.931, 35.511],
       },
     },
     {

@@ -14,7 +14,7 @@ The long-term idea is to turn driving into a discovery game: instead of only fin
 - Score and discovery progress tracking in the frontend
 - Basic auth wiring with Supabase support
 - Express backend with health, routes, and landmarks endpoints
-- Mock landmark data, including the local "Humble Beginnings" test landmark
+- Mock landmark data for testing the discovery loop
 
 ## Tech Stack
 
@@ -109,19 +109,19 @@ GET /api/health
 Nearby scenic routes:
 
 ```http
-GET /api/routes/nearby?lat=39.91946870417404&lng=-83.1277664397881
+GET /api/routes/nearby?lat=<latitude>&lng=<longitude>
 ```
 
 Nearby landmarks:
 
 ```http
-GET /api/landmarks/nearby?lat=39.91946870417404&lng=-83.1277664397881
+GET /api/landmarks/nearby?lat=<latitude>&lng=<longitude>
 ```
 
 Optional landmark radius:
 
 ```http
-GET /api/landmarks/nearby?lat=39.91946870417404&lng=-83.1277664397881&radiusMi=20
+GET /api/landmarks/nearby?lat=<latitude>&lng=<longitude>&radiusMi=20
 ```
 
 Both route and landmark endpoints return GeoJSON `FeatureCollection` responses.
