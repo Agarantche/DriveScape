@@ -20,6 +20,7 @@ const LANDMARKS = {
         points: 25,
         rarity: "starter",
         vibe: "Day-one landmark",
+        checkInRadiusMi: 2,
         region: "Ohio",
         country: "United States",
       },

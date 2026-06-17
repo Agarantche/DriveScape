@@ -17,6 +17,13 @@ const MAP_STYLES = {
   streets: "mapbox://styles/mapbox/streets-v12",
   satellite: "mapbox://styles/mapbox/satellite-streets-v12",
 };
+const COLORS = {
+  navy: "#0a2463",
+  red: "#fb3640",
+  gray: "#605f5e",
+  blue: "#247ba0",
+  light: "#e2e2e2",
+};
 
 function toRadians(degrees) {
   return (degrees * Math.PI) / 180;
@@ -89,7 +96,7 @@ export default function DriveApp() {
           [Math.min(...lons), Math.min(...lats)],
           [Math.max(...lons), Math.max(...lats)],
         ],
-        { padding: { top: 130, bottom: 170, left: 340, right: 250 }, duration: 1200, maxZoom: 13 }
+        { padding: { top: 130, bottom: 170, left: 560, right: 260 }, duration: 1200, maxZoom: 13 }
       );
     }
   }, []);
@@ -104,7 +111,7 @@ export default function DriveApp() {
         center: coords,
         zoom: Math.max(map.current.getZoom(), 12),
         duration: 700,
-        padding: { top: 130, bottom: 170, left: 340, right: 360 },
+        padding: { top: 130, bottom: 170, left: 560, right: 360 },
       });
     }
   }, []);
@@ -116,7 +123,8 @@ export default function DriveApp() {
       if (!feature) return;
 
       const milesAway = getLandmarkDistanceMi(feature, userLngLat);
-      if (!Number.isFinite(milesAway) || milesAway > CHECK_IN_RADIUS_MI) return;
+      const checkInRadiusMi = Number(feature.properties.checkInRadiusMi) || CHECK_IN_RADIUS_MI;
+      if (!Number.isFinite(milesAway) || milesAway > checkInRadiusMi) return;
 
       visitedLandmarksRef.current.add(id);
       setVisitedLandmarkIds([...visitedLandmarksRef.current]);
@@ -144,14 +152,14 @@ export default function DriveApp() {
             type: "line",
             source: "scenic-routes",
             layout: { "line-join": "round", "line-cap": "round" },
-            paint: { "line-color": "#ff6b35", "line-width": 12, "line-blur": 8, "line-opacity": 0.4 },
+            paint: { "line-color": COLORS.blue, "line-width": 12, "line-blur": 8, "line-opacity": 0.42 },
           });
           m.addLayer({
             id: "scenic-routes-line",
             type: "line",
             source: "scenic-routes",
             layout: { "line-join": "round", "line-cap": "round" },
-            paint: { "line-color": "#ff6b35", "line-width": 4 },
+            paint: { "line-color": COLORS.blue, "line-width": 4 },
           });
           m.addLayer({
             id: "scenic-routes-selected",
@@ -159,7 +167,7 @@ export default function DriveApp() {
             source: "scenic-routes",
             filter: ["==", ["get", "id"], ""],
             layout: { "line-join": "round", "line-cap": "round" },
-            paint: { "line-color": "#fff1e8", "line-width": 5, "line-blur": 0.3 },
+            paint: { "line-color": COLORS.light, "line-width": 5, "line-blur": 0.3 },
           });
           const pick = (e) => {
             if (e.features?.[0]) selectRoute(e.features[0].properties.id);
@@ -183,7 +191,7 @@ export default function DriveApp() {
             id: "landmarks-hit",
             type: "circle",
             source: "landmarks",
-            paint: { "circle-radius": 22, "circle-color": "#ffffff", "circle-opacity": 0 },
+            paint: { "circle-radius": 22, "circle-color": COLORS.light, "circle-opacity": 0 },
           });
           m.addLayer({
             id: "landmarks-pulse",
@@ -191,7 +199,7 @@ export default function DriveApp() {
             source: "landmarks",
             paint: {
               "circle-radius": 18,
-              "circle-color": "#ff6b35",
+              "circle-color": COLORS.red,
               "circle-opacity": 0.18,
               "circle-blur": 0.35,
             },
@@ -202,8 +210,8 @@ export default function DriveApp() {
             source: "landmarks",
             paint: {
               "circle-radius": 9,
-              "circle-color": "#ff6b35",
-              "circle-stroke-color": "#fff4ed",
+              "circle-color": COLORS.red,
+              "circle-stroke-color": COLORS.light,
               "circle-stroke-width": 3,
             },
           });
@@ -215,8 +223,8 @@ export default function DriveApp() {
             filter: visitedIds.length ? ["in", ["get", "id"], ["literal", visitedIds]] : ["==", ["get", "id"], ""],
             paint: {
               "circle-radius": 8,
-              "circle-color": "#34d399",
-              "circle-stroke-color": "#ecfdf5",
+              "circle-color": COLORS.blue,
+              "circle-stroke-color": COLORS.light,
               "circle-stroke-width": 3,
             },
           });
@@ -227,8 +235,8 @@ export default function DriveApp() {
             filter: ["==", ["get", "id"], ""],
             paint: {
               "circle-radius": 16,
-              "circle-color": "rgba(255, 107, 53, 0)",
-              "circle-stroke-color": "#fff4ed",
+              "circle-color": "rgba(251, 54, 64, 0)",
+              "circle-stroke-color": COLORS.light,
               "circle-stroke-width": 4,
             },
           });
@@ -416,30 +424,37 @@ export default function DriveApp() {
     ? getLandmarkDistanceMi(selectedLandmarkFeature, userLngLat)
     : undefined;
   const selectedLandmarkVisited = selectedLandmarkId ? visitedLandmarkIds.includes(selectedLandmarkId) : false;
+  const selectedLandmarkRadiusMi =
+    Number(selectedLandmarkFeature?.properties?.checkInRadiusMi) || CHECK_IN_RADIUS_MI;
   const selectedLandmark =
     selectedLandmarkFeature && Number.isFinite(selectedLandmarkDistanceMi)
       ? {
           ...selectedLandmarkFeature.properties,
           distanceMi: Number(selectedLandmarkDistanceMi.toFixed(1)),
           isVisited: selectedLandmarkVisited,
-          canCheckIn: !selectedLandmarkVisited && selectedLandmarkDistanceMi <= CHECK_IN_RADIUS_MI,
+          checkInRadiusMi: selectedLandmarkRadiusMi,
+          canCheckIn: !selectedLandmarkVisited && selectedLandmarkDistanceMi <= selectedLandmarkRadiusMi,
         }
       : selectedLandmarkFeature?.properties;
 
   return (
     <>
+      <div className="drive-app-bg" aria-hidden="true" />
       <div ref={mapContainer} className="map-root" />
 
       <Hud
         route={selectedRoute}
         routes={routes}
+        landmarks={landmarks}
         landmark={selectedLandmark}
         landmarkCount={landmarks.length}
         visitedLandmarkCount={visitedLandmarkIds.length}
-        checkInRadiusMi={CHECK_IN_RADIUS_MI}
+        visitedLandmarkIds={visitedLandmarkIds}
         onCheckInLandmark={checkInLandmark}
         selectedId={selectedId}
+        selectedLandmarkId={selectedLandmarkId}
         onSelectRoute={selectRoute}
+        onSelectLandmark={selectLandmark}
         backendStatus={backendStatus}
         user={user}
         onSignOut={signOut}

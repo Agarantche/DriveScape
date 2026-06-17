@@ -5,10 +5,10 @@
   justify-content: center;
   padding: 24px;
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  color: #eef2f8;
+  color: #e2e2e2;
   background:
-    radial-gradient(120% 90% at 50% -10%, rgba(255, 107, 53, 0.16), transparent 60%),
-    linear-gradient(180deg, #0a0e16, #070a11);
+    radial-gradient(120% 90% at 50% -10%, rgba(36, 123, 160, 0.22), transparent 60%),
+    linear-gradient(180deg, #0a2463, #06153a);
 }
 .auth * {
   box-sizing: border-box;
@@ -16,8 +16,8 @@
 .auth__card {
   width: 100%;
   max-width: 380px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(226, 226, 226, 0.08), rgba(96, 95, 94, 0.14));
+  border: 1px solid rgba(226, 226, 226, 0.14);
   border-radius: 20px;
   padding: 30px 28px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
@@ -29,21 +29,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ff9d72;
-  background: rgba(255, 107, 53, 0.16);
-  border: 1px solid rgba(255, 107, 53, 0.4);
-  box-shadow: 0 0 26px rgba(255, 107, 53, 0.3);
+  color: #fb3640;
+  background: rgba(251, 54, 64, 0.16);
+  border: 1px solid rgba(251, 54, 64, 0.48);
+  box-shadow: 0 0 26px rgba(251, 54, 64, 0.28);
   margin-bottom: 18px;
 }
 .auth__title {
   font-size: 24px;
   font-weight: 700;
-  color: #fff;
+  color: #e2e2e2;
   margin: 0 0 4px;
 }
 .auth__sub {
   font-size: 14px;
-  color: rgba(238, 242, 248, 0.6);
+  color: rgba(226, 226, 226, 0.66);
   margin: 0 0 22px;
 }
 .auth__field {
@@ -52,23 +52,23 @@
 .auth__label {
   display: block;
   font-size: 12px;
-  color: rgba(238, 242, 248, 0.6);
+  color: rgba(226, 226, 226, 0.66);
   margin-bottom: 6px;
 }
 .auth__input {
   width: 100%;
   padding: 12px 14px;
   font-size: 15px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2e2e2;
+  background: rgba(96, 95, 94, 0.28);
+  border: 1px solid rgba(226, 226, 226, 0.18);
   border-radius: 10px;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .auth__input:focus {
-  border-color: #ff6b35;
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+  border-color: #247ba0;
+  box-shadow: 0 0 0 3px rgba(36, 123, 160, 0.28);
 }
 .auth__btn {
   width: 100%;
@@ -76,12 +76,12 @@
   padding: 13px;
   font-size: 15px;
   font-weight: 600;
-  color: #1a0f0a;
+  color: #e2e2e2;
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  background: linear-gradient(100deg, #ff6b35, #ff9d56);
-  box-shadow: 0 10px 28px rgba(255, 107, 53, 0.4);
+  background: linear-gradient(100deg, #fb3640, #247ba0);
+  box-shadow: 0 10px 28px rgba(36, 123, 160, 0.34);
   transition: transform 0.15s ease;
 }
 .auth__btn:hover:not(:disabled) {
@@ -95,26 +95,26 @@
   margin-top: 18px;
   font-size: 13px;
   text-align: center;
-  color: rgba(238, 242, 248, 0.6);
+  color: rgba(226, 226, 226, 0.66);
 }
 .auth__alt a {
-  color: #ff9d72;
+  color: #fb3640;
   text-decoration: none;
   font-weight: 600;
 }
 .auth__error {
-  background: rgba(255, 90, 82, 0.14);
-  border: 1px solid rgba(255, 90, 82, 0.4);
-  color: #ffb4af;
+  background: rgba(251, 54, 64, 0.16);
+  border: 1px solid rgba(251, 54, 64, 0.46);
+  color: #e2e2e2;
   font-size: 13px;
   padding: 10px 12px;
   border-radius: 10px;
   margin-bottom: 14px;
 }
 .auth__notice {
-  background: rgba(255, 180, 80, 0.12);
-  border: 1px solid rgba(255, 180, 80, 0.35);
-  color: #ffd9a0;
+  background: rgba(96, 95, 94, 0.24);
+  border: 1px solid rgba(226, 226, 226, 0.2);
+  color: #e2e2e2;
   font-size: 12.5px;
   line-height: 1.5;
   padding: 11px 13px;
@@ -122,15 +122,15 @@
   margin-bottom: 16px;
 }
 .auth__notice code {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(10, 36, 99, 0.46);
   padding: 1px 5px;
   border-radius: 4px;
   font-size: 12px;
 }
 .auth__ok {
-  background: rgba(52, 224, 138, 0.12);
-  border: 1px solid rgba(52, 224, 138, 0.4);
-  color: #9ff0c4;
+  background: rgba(36, 123, 160, 0.18);
+  border: 1px solid rgba(36, 123, 160, 0.46);
+  color: #e2e2e2;
   font-size: 13px;
   line-height: 1.5;
   padding: 11px 13px;
@@ -141,9 +141,9 @@
   display: inline-block;
   margin-top: 18px;
   font-size: 13px;
-  color: rgba(238, 242, 248, 0.5);
+  color: rgba(226, 226, 226, 0.56);
   text-decoration: none;
 }
 .auth__back:hover {
-  color: rgba(238, 242, 248, 0.8);
+  color: rgba(226, 226, 226, 0.86);
 }

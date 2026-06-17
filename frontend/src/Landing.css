@@ -9,12 +9,12 @@
   padding: 32px 24px;
   overflow: hidden;
   text-align: center;
-  color: #eef2f8;
+  color: #e2e2e2;
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
   background:
-    radial-gradient(120% 90% at 50% -10%, rgba(255, 107, 53, 0.18), transparent 60%),
-    radial-gradient(80% 70% at 85% 112%, rgba(255, 107, 53, 0.12), transparent 55%),
-    linear-gradient(180deg, #0a0e16 0%, #070a11 100%);
+    radial-gradient(120% 90% at 50% -10%, rgba(36, 123, 160, 0.22), transparent 60%),
+    radial-gradient(80% 70% at 85% 112%, rgba(251, 54, 64, 0.14), transparent 55%),
+    linear-gradient(180deg, #0a2463 0%, #06153a 100%);
   animation: land-fade 0.6s ease both;
 }
 .land *,
@@ -43,15 +43,15 @@
 }
 .land__route path {
   fill: none;
-  stroke: rgba(255, 107, 53, 0.5);
+  stroke: rgba(36, 123, 160, 0.65);
   stroke-width: 2.5;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5));
+  filter: drop-shadow(0 0 8px rgba(36, 123, 160, 0.55));
   stroke-dasharray: 14 16;
   animation: land-dash 7s linear infinite;
 }
 .land__route path:nth-child(2) {
-  stroke: rgba(255, 157, 114, 0.35);
+  stroke: rgba(251, 54, 64, 0.42);
   animation-duration: 11s;
   animation-direction: reverse;
 }
@@ -70,10 +70,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ff9d72;
-  background: rgba(255, 107, 53, 0.16);
-  border: 1px solid rgba(255, 107, 53, 0.4);
-  box-shadow: 0 0 34px rgba(255, 107, 53, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color: #fb3640;
+  background: rgba(251, 54, 64, 0.16);
+  border: 1px solid rgba(251, 54, 64, 0.48);
+  box-shadow: 0 0 34px rgba(251, 54, 64, 0.32), inset 0 1px 0 rgba(226, 226, 226, 0.12);
 }
 
 .land__eyebrow {
@@ -82,8 +82,11 @@
   gap: 8px;
   font-size: 12.5px;
   letter-spacing: 0.3px;
-  color: rgba(238, 242, 248, 0.62);
+  color: rgba(226, 226, 226, 0.66);
   margin-bottom: 18px;
+}
+.land__eyebrow .hud-accent {
+  color: #fb3640;
 }
 .land__dot {
   width: 8px;
@@ -91,12 +94,12 @@
   border-radius: 50%;
 }
 .land__dot.is-on {
-  background: #34e08a;
-  box-shadow: 0 0 9px rgba(52, 224, 138, 0.9);
+  background: #247ba0;
+  box-shadow: 0 0 9px rgba(36, 123, 160, 0.9);
 }
 .land__dot.is-off {
-  background: #ff5a52;
-  box-shadow: 0 0 9px rgba(255, 90, 82, 0.9);
+  background: #fb3640;
+  box-shadow: 0 0 9px rgba(251, 54, 64, 0.9);
 }
 
 .land__title {
@@ -105,10 +108,10 @@
   font-weight: 700;
   letter-spacing: -1.5px;
   margin: 0 0 18px;
-  color: #fff;
+  color: #e2e2e2;
 }
 .land__title span {
-  background: linear-gradient(100deg, #ff6b35, #ffb37e);
+  background: linear-gradient(100deg, #fb3640, #247ba0);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -116,7 +119,7 @@
 .land__lede {
   font-size: clamp(15px, 1.8vw, 18px);
   line-height: 1.6;
-  color: rgba(238, 242, 248, 0.72);
+  color: rgba(226, 226, 226, 0.76);
   max-width: 580px;
   margin: 0 auto 30px;
 }
@@ -127,18 +130,18 @@
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: #1a0f0a;
+  color: #e2e2e2;
   padding: 14px 26px;
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  background: linear-gradient(100deg, #ff6b35, #ff9d56);
-  box-shadow: 0 12px 34px rgba(255, 107, 53, 0.45);
+  background: linear-gradient(100deg, #fb3640, #247ba0);
+  box-shadow: 0 12px 34px rgba(36, 123, 160, 0.36);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .land__cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 44px rgba(255, 107, 53, 0.6);
+  box-shadow: 0 18px 44px rgba(251, 54, 64, 0.38);
 }
 .land__cta:active {
   transform: translateY(0);
@@ -154,8 +157,8 @@
   text-align: left;
   padding: 18px 18px 20px;
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(226, 226, 226, 0.08), rgba(96, 95, 94, 0.14));
+  border: 1px solid rgba(226, 226, 226, 0.14);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
@@ -166,28 +169,28 @@
   align-items: center;
   justify-content: center;
   border-radius: 11px;
-  color: #ff9d72;
-  background: rgba(255, 107, 53, 0.15);
-  border: 1px solid rgba(255, 107, 53, 0.3);
+  color: #e2e2e2;
+  background: rgba(36, 123, 160, 0.28);
+  border: 1px solid rgba(36, 123, 160, 0.48);
   margin-bottom: 13px;
 }
 .land__feat-title {
   font-size: 15px;
   font-weight: 600;
-  color: #fff;
+  color: #e2e2e2;
   margin-bottom: 6px;
 }
 .land__feat-body {
   font-size: 13px;
   line-height: 1.5;
-  color: rgba(238, 242, 248, 0.62);
+  color: rgba(226, 226, 226, 0.68);
 }
 
 .land__foot {
   position: absolute;
   bottom: 20px;
   font-size: 12px;
-  color: rgba(238, 242, 248, 0.4);
+  color: rgba(226, 226, 226, 0.46);
 }
 
 @keyframes land-fade {
@@ -230,9 +233,9 @@
   display: inline-block;
   margin-top: 16px;
   font-size: 13.5px;
-  color: rgba(238, 242, 248, 0.66);
+  color: rgba(226, 226, 226, 0.68);
   text-decoration: none;
 }
 .land__login:hover {
-  color: #ff9d72;
+  color: #fb3640;
 }
